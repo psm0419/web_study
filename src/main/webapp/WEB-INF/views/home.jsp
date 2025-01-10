@@ -20,7 +20,6 @@
 	
 	<div>
 		<form action="board/notice" method="get">
-			<input type= "text">
 			<input type = "submit" value = "공지사항 확인">		
 		</form>
 	</div>
