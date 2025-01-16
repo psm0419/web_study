@@ -1,4 +1,4 @@
-package com.app.controller;
+package com.app.controller.study;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.app.dto.Member;
+import com.app.dto.study.Member;
 
 @Controller
 public class ScopeController {

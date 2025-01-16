@@ -1,4 +1,4 @@
-package com.app.controller;
+package com.app.controller.study;
 
 import java.util.Map;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.app.dto.Product;
+import com.app.dto.study.Product;
 
 @Controller
 public class ViewDataController {
