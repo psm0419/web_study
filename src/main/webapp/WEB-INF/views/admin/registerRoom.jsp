@@ -10,17 +10,18 @@
 	<h1>객실 추가</h1>
 	
 	<form action="" method="post">
-		<label>건물/동 번호 <input type="text" name="buildingNumber"></label>
-		<label>호실번호 <input type="text" name="roomNumber"></label>
-		<label>층수 <input type="text" name="floor"></label>
-		<label>최대숙박 인원 <input type="text" name="maxGuestCount"></label>
-		
+		<label>건물/동 번호 <input type="text" name="buildingNumber"></label><br>
+		<label>호실번호 <input type="text" name="roomNumber"></label><br>
+		<label>층수 <input type="text" name="floor"></label><br>
+		<label>최대숙박 인원 <input type="text" name="maxGuestCount"></label><br>
+	<h2>뷰 선택</h2>	
 		<select name="viewType">
-			<option value="OCN">OCN</option>
-			<option value="CTY">CTY</option>
-			<option value="MOT">MOT</option>
+			<option value="OCN">오션뷰</option>
+			<option value="CTY">시티뷰</option>
+			<option value="MOT">마운틴뷰</option>
 		</select>
 		
+		<br>
 		<br>
 		<button type="submit">객실추가</button>
 	</form>

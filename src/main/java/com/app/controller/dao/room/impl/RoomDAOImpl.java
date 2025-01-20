@@ -2,6 +2,8 @@ package com.app.controller.dao.room.impl;
 
 import java.util.List;
 
+import org.mybatis.spring.SqlSessionTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.app.controller.dao.room.RoomDAO;
@@ -12,6 +14,9 @@ import com.app.dto.room.Room;
 @Repository	//bean 등록 Annotation
 public class RoomDAOImpl implements RoomDAO{
 
+	@Autowired
+	SqlSessionTemplate sqlSessionTemplate;
+	
 	@Override
 	public List<Room> findRoomList() {
 		
@@ -23,8 +28,9 @@ public class RoomDAOImpl implements RoomDAO{
 
 	@Override
 	public int registerRoom(Room room) {
-		
-		return 0;
+		int result = sqlSessionTemplate.insert("room_mapper.registerRoom", room);
+				
+		return result;
 		
 	}
 }

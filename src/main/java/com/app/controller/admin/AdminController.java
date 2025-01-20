@@ -25,8 +25,13 @@ public class AdminController {
 	
 	@PostMapping("/admin/registerRoom")
     public String registerRoomAction(Room room) {
-		
+		//값 넘어온것 확인
 		System.out.println(room.toString());
+		
+		//등록
+		int result = roomService.registerRoom(room);
+		
+		System.out.println(result);
 		
         return "admin/registerRoom";
     }

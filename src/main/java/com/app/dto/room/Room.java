@@ -9,9 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
-@ToString
 @NoArgsConstructor //아무것도 없는 생성자
 @AllArgsConstructor // 다 들어간 생성자
 
