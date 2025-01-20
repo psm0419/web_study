@@ -9,6 +9,6 @@ public interface RoomDAO {
 	List<Room> findRoomList();
 		
 		
-	
+	int registerRoom(Room room);
 	
 }

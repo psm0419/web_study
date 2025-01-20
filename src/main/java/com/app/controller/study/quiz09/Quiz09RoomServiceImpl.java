@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class RoomServiceImpl implements RoomService{
+public class Quiz09RoomServiceImpl implements Quiz09RoomService{
 	@Autowired
-	public RoomDAO roomDAO;
+	public Quiz09RoomDAO roomDAO;
 	
 	@Override
-	public int registerRoom(RoomDTO roomDTO) {
+	public int registerRoom(Quiz09RoomDTO roomDTO) {
 		System.out.println("객실 등록 서비스 시작");
         int result = roomDAO.registerRoom(roomDTO);
         System.out.println("객실 등록 서비스 완료");

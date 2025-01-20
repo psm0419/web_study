@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class Quiz09Controller {
 	@Autowired
-	CustomerService customerService;
-	RoomService roomService;
-
-	public Quiz09Controller(CustomerService customerService, RoomService roomService) {
-		this.customerService = customerService;
-		this.roomService = roomService;
-	}
+	Quiz09CustomerService customerService;
+	
+	@Autowired
+	Quiz09RoomService roomService;
 
 	// 등록 페이지
 	@GetMapping("/quiz/customer")
@@ -32,7 +29,7 @@ public class Quiz09Controller {
 	// 고객 등록 요청
 	@PostMapping("/quiz/customer")
 	public String registerCustomer(@RequestParam String name, @RequestParam int age, @RequestParam String phone) {
-		CustomerDTO customerDTO = new CustomerDTO(name, age, phone);
+		Quiz09CustomerDTO customerDTO = new Quiz09CustomerDTO(name, age, phone);
 		
 		//매개변수로 받은 객체 전달 -> 서비스
 		int result = customerService.registerCustomer(customerDTO);
@@ -47,7 +44,7 @@ public class Quiz09Controller {
 
 	// 객실 등록 요청
 	@PostMapping("/quiz/room")
-	public String registerRoom(RoomDTO roomDTO) {		
+	public String registerRoom(Quiz09RoomDTO roomDTO) {		
 		int result = roomService.registerRoom(roomDTO);
 		
 		if(result >0) {

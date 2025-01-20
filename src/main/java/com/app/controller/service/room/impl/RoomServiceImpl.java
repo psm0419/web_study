@@ -29,5 +29,9 @@ public class RoomServiceImpl implements RoomService{
 		return roomList;
 	}
 
-	
+	@Override
+	public int registerRoom(Room room) {
+		
+		return 0;
+	}
 }
