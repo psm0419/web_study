@@ -2,16 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="user_mapper">
+
+<!-- 	<insert id="saveUser" parameterType="User"> -->
+<!-- 		insert into T_USER values (  -->
+<!-- 		#{id}, -->
+<!-- 		NULL, -->
+<!-- 		#{name}, -->
+<!-- 		'CUS' -->
+<!-- 		) -->
+<!-- 	</insert> -->
 	
-	<insert id="registerRoom" parameterType="com.app.dto.room.Room">
-		insert into T_ROOM values ( SEQ_T_ROOM_PK.nextval, 
-									#{buildingNumber}, 
-									#{roomNumber},
-									#{floor},
-									#{maxGuestCount},
-									#{viewType}
-									)
+	<insert id="saveUser" parameterType="User">
+		insert into T_USER values ( 
+		#{id},
+		#{pw},
+		#{name},
+		#{userType}
+		)
 	</insert>
-	
-	
+
+
 </mapper>
