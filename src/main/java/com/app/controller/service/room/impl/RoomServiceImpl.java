@@ -26,6 +26,7 @@ public class RoomServiceImpl implements RoomService{
 		
 		List<Room> roomList	= roomDAO.findRoomList();
 		System.out.println("RoomService 호출됨");
+		
 		return roomList;
 	}
 
