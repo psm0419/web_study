@@ -3,17 +3,17 @@
 
 <mapper namespace="user_mapper">
 
-<!-- 	<insert id="saveUser" parameterType="User"> -->
-<!-- 		insert into T_USER values (  -->
-<!-- 		#{id}, -->
-<!-- 		NULL, -->
-<!-- 		#{name}, -->
-<!-- 		'CUS' -->
-<!-- 		) -->
-<!-- 	</insert> -->
-	
+	<!-- <insert id="saveUser" parameterType="User"> -->
+	<!-- insert into T_USER values ( -->
+	<!-- #{id}, -->
+	<!-- NULL, -->
+	<!-- #{name}, -->
+	<!-- 'CUS' -->
+	<!-- ) -->
+	<!-- </insert> -->
+
 	<insert id="saveUser" parameterType="User">
-		insert into T_USER values ( 
+		insert into T_USER values (
 		#{id},
 		#{pw},
 		#{name},
@@ -21,5 +21,8 @@
 		)
 	</insert>
 
-
+	<select id="findUserList" resultType="User">
+		SELECT *
+		FROM T_USER
+	</select>
 </mapper>

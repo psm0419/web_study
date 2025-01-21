@@ -9,4 +9,8 @@ public interface RoomService {
 	List<Room> findRoomList();
 	
 	int registerRoom(Room room);
+	
+	Room findByRoomId(int roomId);
+	
+	int removeRoom(int roomId);
 }

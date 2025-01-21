@@ -36,4 +36,18 @@ public class RoomServiceImpl implements RoomService{
 		int result = roomDAO.registerRoom(room);
 		return result;
 	}
+
+	@Override
+	public Room findByRoomId(int roomId) {
+		Room room = roomDAO.findByRoomId(roomId);
+		return room;
+	}
+
+	@Override
+	public int removeRoom(int roomId) {
+		
+		int result = roomDAO.removeRoom(roomId);
+		
+		return result;
+	}
 }
