@@ -48,13 +48,13 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User checkUserLogin(User user) {
 		// 1) 서비스 자체에서 로직을 수행
-		User loginUser =  userDAO.findUserById(user.getId());
-		
-		if(loginUser != null && user.getPw().equals(loginUser.getPw()) 
-				&& loginUser.getUserType().equals(user.getUserType())) {
-			return loginUser;
-		}
-		return null;
+//		User loginUser =  userDAO.findUserById(user.getId());
+//		
+//		if(loginUser != null && user.getPw().equals(loginUser.getPw()) 
+//				&& loginUser.getUserType().equals(user.getUserType())) {
+//			return loginUser;
+//		}
+//		return null;
 		//아이디, 비번이 맞으면 loginUser
 		//아이디X 또는 아이디O 비번X -> null
 		
@@ -68,8 +68,9 @@ public class UserServiceImpl implements UserService{
 //		return null;
 		
 		// 2) DAO-> Mapper 쿼리를 만들어서 비교하는 방법
+		User loginUser = userDAO.checkUserLogin(user);
 		
-		
+		return loginUser;
 	}
 
 	@Override
