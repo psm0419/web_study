@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.app.common.CommonCode;
 import com.app.controller.service.user.UserService;
 import com.app.dto.user.User;
+import com.app.util.LoginManager;
 
 
 @Controller
@@ -62,7 +63,8 @@ public class CustomerController {
 			return "customer/login";
 		}else {
 //			session.setAttribute("loginUser", loginUser);
-			session.setAttribute("loginUserId", loginUser.getId());
+//			session.setAttribute("loginUserId", loginUser.getId());
+			LoginManager.setSessionLogin(session, loginUser.getId());
 			
 			return "redirect:/main";
 		}
@@ -70,21 +72,23 @@ public class CustomerController {
 	
 	@GetMapping("/customer/logout")
 	public String logout(HttpSession session) {
-		session.invalidate();
+		LoginManager.logout(session);
+//		session.invalidate();
 		return "redirect:/main";
 	}
 	
 	@GetMapping("/customer/mypage")
 	public String mypage(HttpSession session, Model model) {
 		//session에 id값이 없으면 로그인 페이지로 보낸다
-		if(session.getAttribute("loginUserId") == null) {
-			return "redirect:/customer/login";
-		}else {
-			User user = userService.findUserById((String)session.getAttribute("loginUserId"));
+//		if(session.getAttribute("loginUserId") != null) {
+		if(LoginManager.isLogin(session)) {			
+		
+//			User user = userService.findUserById((String)session.getAttribute("loginUserId"));
+			User user = userService.findUserById( LoginManager.getLoginUserId(session));
 			model.addAttribute("user", user);
 			
 			return "customer/mypage";
 		}
-		
+		return "redirect:/customer/login";
 	}
 }
