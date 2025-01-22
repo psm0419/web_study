@@ -18,7 +18,6 @@ import com.app.controller.service.user.UserService;
 import com.app.dto.room.Room;
 import com.app.dto.user.User;
 
-
 @Controller
 public class AdminController {
 
@@ -45,7 +44,7 @@ public class AdminController {
 
 		if (result > 0) {
 			return "redirect:/admin/rooms";
-		}else {
+		} else {
 			return "admin/registerRoom";
 		}
 	}
@@ -60,64 +59,90 @@ public class AdminController {
 
 		return "admin/rooms";
 	}
-	
-	//관리자 특정 객실에 대한 정보(상세페이지)
-	//@GetMapping("/admin/roominfo")  roominfo?roomId=2
-	//@GetMapping("/admin/room/2") @GetMapping("/admin/room/30")
-	
+
+	// 관리자 특정 객실에 대한 정보(상세페이지)
+	// @GetMapping("/admin/roominfo") roominfo?roomId=2
+	// @GetMapping("/admin/room/2") @GetMapping("/admin/room/30")
+
 	@GetMapping("/admin/room/{roomId}")
 	public String room(@PathVariable String roomId, Model model) {
 		int roomIdInt = Integer.parseInt(roomId);
-		
+
 		Room room = roomService.findByRoomId(roomIdInt);
-		
+
 		model.addAttribute("room", room);
-		
+
 		return "admin/room";
 	}
-	
-	//객실 정보 삭제
+
+	// 객실 정보 삭제
 	@GetMapping("/admin/removeRoom")
 	public String removeRoom(HttpServletRequest request) {
 		String roomId = request.getParameter("roomId");
-		
+
 		int roomIdInt = Integer.parseInt(roomId);
-		
+
 		int result = roomService.removeRoom(roomIdInt);
 		if (result > 0) {
 			return "redirect:/admin/rooms";
-		}else {
+		} else {
 			return "admin/rooms";
-		}		
+		}
+	}
+
+	// 객실 정보 수정
+	@GetMapping("/admin/modifyRoom")
+	public String modifyRoom(HttpServletRequest request) {
+		String roomId = request.getParameter("roomId");
+		int roomIdInt = Integer.parseInt(roomId);
+		// roomId -> 해당 호실에 대한 정보 조회
+		// 화면에 세팅
+		Room room = roomService.findByRoomId(roomIdInt);
+		request.setAttribute("room", room);
+
+		return "admin/modifyRoom";
+	}
+	
+	@PostMapping("/admin/modifyRoom")
+	public String modifyRoomAction(Room room) {
+		
+		int result = roomService.modifyRoom(room);
+		
+		if (result > 0) { //수정 성공
+			return "redirect:/admin/room/" + room.getRoomId();
+		} else { //수정 실패
+			return "redirect:/admin/modifyRoom?roomId=" + room.getRoomId();
+		}
 	}
 
 	@GetMapping("/admin/users/add")
 	public String add() {
 		return "admin/users/saveUser";
 	}
-	
+
 	@PostMapping("/admin/users/add")
-	public String addAction(User user) {		
+	public String addAction(User user) {
 
 		// 등록
-		user.setUserType(CommonCode.USER_USERTYPE_CUSTOMER); //여기서 해도 되고
+		user.setUserType(CommonCode.USER_USERTYPE_CUSTOMER); // 여기서 해도 되고
 		int result = userService.saveUser(user);
 //		int result = userService.saveCustomerUser(user); //서비스에서 해도 되고
 		System.out.println(result);
 
 		if (result > 0) {
 			return "redirect:/admin/users";
-		}else {
+		} else {
 			return "admin/users/saveUser";
-		}		
+		}
 	}
-	
+
 	@GetMapping("/admin/users")
 	public String users(Model model) {
 		List<User> userList = userService.findUserList();
-		
+
 		model.addAttribute("userList", userList);
 
 		return "admin/users/users";
 	}
+
 }

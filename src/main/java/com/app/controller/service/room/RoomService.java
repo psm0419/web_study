@@ -13,4 +13,6 @@ public interface RoomService {
 	Room findByRoomId(int roomId);
 	
 	int removeRoom(int roomId);
+	
+	int modifyRoom(Room room);
 }

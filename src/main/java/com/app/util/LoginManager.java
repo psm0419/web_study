@@ -9,6 +9,7 @@ public class LoginManager {
 
 	public static void setSessionLogin(HttpSession session, String id) {
 		session.setAttribute(SESSION_LOGIN_KEY, id);
+		
 	}
 
 	public static void setSessionLogin(HttpServletRequest request, String id) {
