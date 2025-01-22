@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.app.common.CommonCode;
 import com.app.controller.service.room.RoomService;
 import com.app.controller.service.user.UserService;
 import com.app.dto.room.Room;
@@ -99,7 +100,7 @@ public class AdminController {
 	public String addAction(User user) {		
 
 		// 등록
-		user.setUserType("CUS"); //여기서 해도 되고
+		user.setUserType(CommonCode.USER_USERTYPE_CUSTOMER); //여기서 해도 되고
 		int result = userService.saveUser(user);
 //		int result = userService.saveCustomerUser(user); //서비스에서 해도 되고
 		System.out.println(result);

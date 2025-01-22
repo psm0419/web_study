@@ -8,8 +8,11 @@ import com.app.dto.user.User;
 public interface UserService {
 
 	int saveUser(User user);
+	
 	List<User> findUserList();
 	
+	User findUserById(String id);
+	User checkUserLogin(User user);
 	
 	int saveCustomerUser(User user);
 	int saveAdminUser(User user);
