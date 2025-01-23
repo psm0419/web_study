@@ -8,7 +8,7 @@ public class User {
 //	public static final String USERTYPE_CUSTOMER = "CUS";
 //	public static final String USERTYPE_ADMIN = "ADM";
 	
-	String id;
+	String id; 
 	String pw;
 	String name;
 	String userType;

@@ -16,4 +16,6 @@ public interface UserService {
 	
 	int saveCustomerUser(User user);
 	int saveAdminUser(User user);
+	
+	int modifyUser(User user);
 }

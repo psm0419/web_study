@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import com.app.common.CommonCode;
 import com.app.controller.service.room.RoomService;
 import com.app.controller.service.user.UserService;
+import com.app.controller.service.user.impl.UserServiceImpl;
 import com.app.dto.room.Room;
 import com.app.dto.user.User;
 
@@ -144,5 +145,36 @@ public class AdminController {
 
 		return "admin/users/users";
 	}
+	
+//	@GetMapping("/admin/users/user")
+//	public String user(User user, Model model) {
+//		
+//		User user1 = userService.findUserById(user.getId());
+//
+//		model.addAttribute("user", user1);
+//
+//		return "admin/users/user";
+//	}
 
+	@GetMapping("/admin/users/{id}")
+	public String modifyUser(@PathVariable String id, Model model) {		
+		
+		User user = userService.findUserById(id);
+
+		model.addAttribute("user", user);
+
+		return "admin/users/modifyUser";
+	}
+	
+	@PostMapping("/admin/users/{id}")
+	public String modifyUserAction(User user) {
+		
+		int result = userService.modifyUser(user);
+		
+		if (result > 0) { //수정 성공
+			return "redirect:/admin/users";
+		} else { //수정 실패
+			return "redirect:/admin/users/modifyUser/" + user.getId();
+		}
+	}
 }
