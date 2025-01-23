@@ -25,25 +25,80 @@
 		SELECT *
 		FROM T_USER
 	</select>
-	
-	<select id="findUserById" resultType="User" parameterType="String">
+
+	<select id="findUserById" resultType="User"
+		parameterType="String">
 		SELECT *
 		FROM T_USER
 		WHERE id = #{id}
 	</select>
-	
-	<select id="checkUserLogin" resultType="User" parameterType="User">
+
+	<select id="checkUserLogin" resultType="User"
+		parameterType="User">
 		SELECT *
 		FROM T_USER
-		WHERE id = #{id} and pw = #{pw} and user_type = #{userType}
+		WHERE id = #{id} and pw = #{pw} and
+		user_type = #{userType}
 	</select>
-	
+
 	<update id="modifyUser" parameterType="User">
 		UPDATE T_USER
-		SET name = #{name},
-			pw = #{pw},		
-			user_type = #{userType}
-		WHERE id = #{id}	
+		SET name =
+		#{name},
+		pw = #{pw},
+		user_type = #{userType}
+		WHERE id = #{id}
 	</update>
-	
+
+	<select id="findUserListBySearchCondition"
+		parameterType="UserSearchCondition" resultType="User">
+		SELECT *
+		FROM T_USER
+		<where>
+			<if test="id != null and id != '' or name != null and name != ''">
+				(
+				<if test="id != null and id != ''">
+					id like '%' || #{userSearchKeyword} || '%'
+				</if>
+				<if test="name != null and name != ''">
+					<if test="id != null and id != ''">
+						or name like '%' || #{userSearchKeyword} || '%'
+					</if>
+					<if test="id == null or id == ''">
+						name like '%' || #{userSearchKeyword} || '%'
+					</if>
+				</if>
+				)
+			</if>
+			<if test="userType != null and userType != ''">
+				and user_type = #{userType}
+			</if>
+		</where>
+
+		<!-- <where> -->
+		<!-- <if test="id != null and id != '' or name != null and name != ''"> -->
+		<!-- ( -->
+		<!-- 1=2 -->
+		<!-- <if test="id != null and id != ''"> -->
+		<!-- or id like '%' || #{userSearchKeyword} || '%' -->
+		<!-- </if> -->
+		<!-- <if test="name != null and name != ''"> -->
+		<!-- or name like '%' || #{userSearchKeyword} || '%' -->
+		<!-- </if> -->
+		<!-- ) -->
+		<!-- </if> -->
+		<!-- <if test="userType != null and userType != ''"> -->
+		<!-- and user_type = #{userType} -->
+		<!-- </if> -->
+		<!-- </where> -->
+
+		<!-- WHERE 1=2 -->
+		<!-- <if test="id != null and id != ''"> -->
+		<!-- or id like '%' || #{userSearchKeyword} || '%' -->
+		<!-- </if> -->
+		<!-- <if test="name != null and name != ''"> -->
+		<!-- or name like '%' || #{userSearchKeyword} || '%' -->
+		<!-- </if> -->
+	</select>
+
 </mapper>

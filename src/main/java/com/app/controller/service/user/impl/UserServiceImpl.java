@@ -11,6 +11,7 @@ import com.app.common.CommonCode;
 import com.app.controller.dao.user.UserDAO;
 import com.app.controller.service.user.UserService;
 import com.app.dto.user.User;
+import com.app.dto.user.UserSearchCondition;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -84,6 +85,14 @@ public class UserServiceImpl implements UserService{
 	public int modifyUser(User user) {
 		int result = userDAO.modifyUser(user);
 		return result;
+	}
+
+	@Override
+	public List<User> findUserListBySearchCondition(UserSearchCondition userSearchCondition) {
+		
+		List<User> userList = userDAO.findUserListBySearchCondition(userSearchCondition);
+		
+		return userList;
 	}
 
 }
