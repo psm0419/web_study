@@ -7,10 +7,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.app.common.ApiCommonCode;
 import com.app.common.CommonCode;
 import com.app.controller.service.user.UserService;
+import com.app.dto.api.ApiResponse;
+import com.app.dto.api.ApiResponseHeader;
 import com.app.dto.user.User;
+import com.app.dto.user.UserDupCheck;
 import com.app.util.LoginManager;
 
 
@@ -90,5 +97,45 @@ public class CustomerController {
 			return "customer/mypage";
 		}
 		return "redirect:/customer/login";
+	}
+	@ResponseBody
+	@RequestMapping("/customer/checkDupId")
+	public String checkDupId(@RequestBody String data) {
+			System.out.println("checkDupId 요청 들어옴");
+			System.out.println(data);
+			//매개변수 data : 중복여부를 확인하고 싶은 아이디
+			//DB에 아이디 있는지 확인
+			boolean result = userService.isDuplicatedId(data);
+			
+			if(result == true) {
+				return "Y";
+			} else {
+				return "N";				
+			}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/customer/checkDupIdJson")
+	public ApiResponse<String> checkDupIdJson(@RequestBody UserDupCheck userDupCheck) {
+						//JSON format Text -> UserDupCheck 객체로 파싱
+			System.out.println("checkDupIdJson 요청 들어옴");
+			System.out.println(userDupCheck);
+			
+			//DB에 아이디 있는지 확인
+			boolean result = userService.isDuplicatedId(userDupCheck.getId());
+			
+			ApiResponse<String> apiResponse = new ApiResponse<String>();
+			ApiResponseHeader header = new ApiResponseHeader();
+			header.setResultCode(ApiCommonCode.API_RESULT_SUCCESS);
+			header.setResultMessage(ApiCommonCode.API_RESULT_SUCCESS_MSG);
+			
+			apiResponse.setHeader(header);			
+			
+			if(result == true) {
+				apiResponse.setBody("Y");
+			} else {
+				apiResponse.setBody("N");			
+			}
+			return apiResponse;
 	}
 }

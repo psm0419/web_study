@@ -17,4 +17,5 @@ public interface UserDAO {
 	int modifyUser(User user);
 	
 	List<User> findUserListBySearchCondition(UserSearchCondition userSearchCondition);
+	
 }
