@@ -20,7 +20,9 @@ import com.app.dto.room.Room;
 import com.app.dto.user.User;
 import com.app.dto.user.UserSearchCondition;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j //로그사용 어노테이션
 @Controller
 public class AdminController {
 

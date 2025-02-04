@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService{
 		
 		return userList;
 	}
-
+	
 	@Override
 	public boolean isDuplicatedId(String id) {
 		//중복체크
