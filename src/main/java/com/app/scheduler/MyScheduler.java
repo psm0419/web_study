@@ -6,7 +6,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 
 public class MyScheduler {
 	
-	@Scheduled(cron = "0/5 * * * * *")
+//	@Scheduled(cron = "0/5 * * * * *")
+	@Scheduled(cron = "* * 3 * * *")
 	public void schedule() {
 		System.out.println("schedule"+ LocalDate.now());
 		
