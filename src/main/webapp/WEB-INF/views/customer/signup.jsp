@@ -1,20 +1,39 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	.error-msg {
+		color: red
+}
+</style>
 </head>
 <body>
 	<h2>회원가입 페이지</h2>
 
 	<form action="" method="post">
-		<label>아이디: <input type="text" name="id" id="inputId"></label><br>
+		<label>아이디: <input type="text" name="id" id="inputId"
+			value="${user.id}"></label><br>
+			<spring:hasBindErrors name="user">
+			<c:if test="${errors.hasFieldErrors('id')}">
+				<p class="error-msg">아이디 필수로 입력하세요!</p>
+			</c:if>
+		</spring:hasBindErrors>			
 		<button type="button" id="btn_checkDupId">중복체크</button>
-		<span id="checkDupMsg"></span>
-		<br> <label>비번: <input type="password" name="pw"></label><br>
-		<label>이름: <input type="text" name="name"></label><br>
+		<span id="checkDupMsg"></span> <br> <label>비번: <input
+			type="password" name="pw"></label><br>
+		<spring:hasBindErrors name="user">
+			<c:if test="${errors.hasFieldErrors('pw')}">
+				<p class="error-msg">비밀번호는 8자리~12자리로 입력해주세요!</p>
+				<p class="error-msg">"${errors.hasFieldErrors('pw').defaultMessage}"</p>
+			</c:if>
+		</spring:hasBindErrors>
+		<label>이름: <input type="text" name="name" value="${user.name}"></label><br>
 		<button type="submit">회원가입</button>
 	</form>
 
