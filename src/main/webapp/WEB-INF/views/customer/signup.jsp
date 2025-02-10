@@ -23,10 +23,16 @@
 			<c:if test="${errors.hasFieldErrors('id')}">
 				<p class="error-msg">아이디 필수로 입력하세요!</p>
 			</c:if>
-		</spring:hasBindErrors>			
+		</spring:hasBindErrors>
+		
+		<c:if test="${userVaildError.id != null}">
+			<p class="error-msg">${userVaildError.id}</p>
+		</c:if>	
+		
 		<button type="button" id="btn_checkDupId">중복체크</button>
-		<span id="checkDupMsg"></span> <br> <label>비번: <input
-			type="password" name="pw"></label><br>
+		<span id="checkDupMsg"></span> <br> 
+		
+		<label>비번: <input type="password" name="pw"></label><br>
 		<spring:hasBindErrors name="user">
 			<c:if test="${errors.hasFieldErrors('pw')}">
 				<p class="error-msg">비밀번호는 8자리~12자리로 입력해주세요!</p>
