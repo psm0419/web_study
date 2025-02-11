@@ -12,15 +12,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.app.common.ApiCommonCode;
 import com.app.common.CommonCode;
+import com.app.controller.service.file.FileService;
 import com.app.controller.service.user.UserService;
 import com.app.dto.api.ApiResponse;
 import com.app.dto.api.ApiResponseHeader;
+import com.app.dto.file.FileInfo;
+import com.app.dto.user.ProfileRequestForm;
 import com.app.dto.user.User;
 import com.app.dto.user.UserDupCheck;
+import com.app.dto.user.UserProfileImage;
 import com.app.dto.user.UserValidError;
+import com.app.util.FileManager;
 import com.app.util.LoginManager;
 import com.app.validator.UserCutomValidator;
 
@@ -29,6 +35,9 @@ public class CustomerController {
 
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	FileService fileService;
 
 	@GetMapping("/customer")
 	public String customer() {
@@ -104,17 +113,26 @@ public class CustomerController {
 
 	@PostMapping("/customer/login")
 	public String loginAction(User user, HttpSession session) {
-		// user 로그인 할 수 있게 정보가 들어있는지 확인
-		user.setUserType(CommonCode.USER_USERTYPE_CUSTOMER);
+		
+		//user   id pw 화면으로부터 전달
+		// name userType : null
+		
+		//user 로그인 할 수 있게 정보가 들어있는지! 확인!
+		user.setUserType( CommonCode.USER_USERTYPE_CUSTOMER );
 		User loginUser = userService.checkUserLogin(user);
-
-		if (loginUser == null) {
+		
+		if(loginUser == null) { // 아이디X? 아이디O&비번X  null
 			return "customer/login";
-		} else {
-//			session.setAttribute("loginUser", loginUser);
-//			session.setAttribute("loginUserId", loginUser.getId());
+		} else {  // 아이디&비번이 맞으면 loginUser 
+			//로그인 정보가 맞아서 로그인 성공
+			//session.setAttribute("loginUser", loginUser);
+			//session.setAttribute("loginUserId", loginUser.getId());
+			
+			//로그인 성공시 세션에 로그인 ID 저장
 			LoginManager.setSessionLogin(session, loginUser.getId());
-
+			
+//			log.info( loginUser.getId() + "사용자 로그인함");
+			
 			return "redirect:/main";
 		}
 	}
@@ -128,17 +146,32 @@ public class CustomerController {
 
 	@GetMapping("/customer/mypage")
 	public String mypage(HttpSession session, Model model) {
-		// session에 id값이 없으면 로그인 페이지로 보낸다
-//		if(session.getAttribute("loginUserId") != null) {
-		if (LoginManager.isLogin(session)) {
-
-//			User user = userService.findUserById((String)session.getAttribute("loginUserId"));
-			User user = userService.findUserById(LoginManager.getLoginUserId(session));
+		
+		//session 에 loginUserId 값이 존재유무
+		//if(session.getAttribute("loginUserId") != null) { //로그인 상태
+		if(LoginManager.isLogin(session)) {
+			
+			//로그인되어있는 사용자의 정보를 보여주기
+			//User user = userService.findUserById( (String)session.getAttribute("loginUserId") );
+			User user = userService.findUserById( LoginManager.getLoginUserId(session) );
 			model.addAttribute("user", user);
-
+			
+			 //userid -> UserProfileImage -> (fileName) -> FileInfo
+			
+			UserProfileImage upi = userService.findUserProfileImageById(user.getId());
+			
+			if(upi != null) {
+				FileInfo fileInfo = fileService.findFileInfoByFileName(upi.getFileName());
+				model.addAttribute("fileInfo", fileInfo);
+			}
+			
 			return "customer/mypage";
 		}
+		//로그인 안된 상태
 		return "redirect:/customer/login";
+		
+		
+		
 	}
 
 	@ResponseBody
@@ -180,5 +213,84 @@ public class CustomerController {
 			apiResponse.setBody("N");
 		}
 		return apiResponse;
+	}
+	
+//	@PostMapping("/customer/profile")
+//	public String profile(HttpServletRequest request, MultipartRequest multipartRequest) {
+//
+//		System.out.println(request.getParameter("id"));
+//		System.out.println(request.getParameter("name"));
+//		
+//		MultipartFile file =  multipartRequest.getFile("profileImage");
+//		System.out.println(file.getName());
+//		System.out.println(file.getOriginalFilename());
+//		System.out.println(file.isEmpty());
+//		System.out.println(file.getContentType());
+//		System.out.println(file.getSize());
+//		
+//		return "redirect:/customer/mypage";
+//	}
+	//객체로 하는 방법
+	@PostMapping("/customer/profile")
+	public String profileAction(ProfileRequestForm profileRequestForm) {
+		
+		System.out.println( profileRequestForm.getId() );
+		System.out.println( profileRequestForm.getName() );
+		
+		MultipartFile file = profileRequestForm.getProfileImage();
+		//첨부파일 수신
+		
+		//정보 확인
+		System.out.println( file.getName()  );
+		System.out.println( file.getOriginalFilename()  );
+		System.out.println( file.isEmpty()  );
+		System.out.println( file.getContentType() );
+		System.out.println( file.getSize()  );
+		
+		//1. 실제 파일을 폴더에 저장
+		
+		/*
+		//자체 저장
+		try {
+			file.transferTo( new File("d:/fileStorage/" + file.getOriginalFilename() )  );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		*/
+		
+		//FileManager 활용
+		
+		try {
+			
+			FileInfo fileInfo = FileManager.storeFile(file);
+			//실제 폴더에 파일을 저장
+		
+			//2. 파일 정보를 DB에 저장
+			int result = fileService.saveFileInfo(fileInfo);
+			//파일 정보만 DB에 저장
+			
+			if(result > 0) {
+//				log.info(fileInfo.getFileName() + " 파일 저장 잘됨");
+				
+				//UserProfileImage 에도 연결할수 있게 저장
+				//저장된 파일이 어떤 유저의 프로필 이미지다! 연결 정보 저장!
+				
+				UserProfileImage upi = new UserProfileImage();
+				//userid를 어디서 가져오나?
+				//1) 세션 
+				//2) view 에 hidden 으로 저장된 id를 같이 전송 
+				upi.setId(profileRequestForm.getId());	//사용자id
+				upi.setFileName(fileInfo.getFileName()); //파일name
+				
+				int result2 = userService.saveUserProfileImage(upi);
+			}
+			
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		return "redirect:/customer/mypage";
 	}
 }

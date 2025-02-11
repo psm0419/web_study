@@ -4,6 +4,7 @@ package com.app.controller.service.user;
 import java.util.List;
 
 import com.app.dto.user.User;
+import com.app.dto.user.UserProfileImage;
 import com.app.dto.user.UserSearchCondition;
 
 public interface UserService {
@@ -28,4 +29,8 @@ public interface UserService {
 	 * @return 중복 여부 확인(true: 중복, false: 사용가능)
 	 */
 	boolean isDuplicatedId(String id);
+	
+	int saveUserProfileImage(UserProfileImage userProfileImage);
+	
+	public UserProfileImage findUserProfileImageById(String id);
 }

@@ -11,6 +11,7 @@ import com.app.common.CommonCode;
 import com.app.controller.dao.user.UserDAO;
 import com.app.controller.service.user.UserService;
 import com.app.dto.user.User;
+import com.app.dto.user.UserProfileImage;
 import com.app.dto.user.UserSearchCondition;
 
 @Service
@@ -106,6 +107,23 @@ public class UserServiceImpl implements UserService{
 		}else { //있다 -> 중복O
 			return true;
 		}
+	}
+
+	@Override
+	public int saveUserProfileImage(UserProfileImage userProfileImage) {
+		
+		int result = userDAO.saveUserProfileImage(userProfileImage);
+		
+		return result;
+	}
+
+
+	@Override
+	public UserProfileImage findUserProfileImageById(String id) {
+		
+		UserProfileImage userProfileImage = userDAO.findUserProfileImageById(id);
+		
+		return userProfileImage;
 	}
 
 }
